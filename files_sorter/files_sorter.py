@@ -21,22 +21,15 @@ def check_dir(source_path: Path, target_path: Path):
             check_dir(item, target_path)
             if is_empty(item):
                 os.rmdir(item)
-
         elif item.is_file():
             copy_file_to_new_dir(item, target_path)
-        else:
-            logging.debug(f'transfer file {item} to special folder')
-
-#  aleksandr.voitushenko/desktop/goit/pythonweb24/goit_web_hw3/files_sorter/
 
 
 def copy_file_to_new_dir(file_path: Path, target_dir_path: Path):
-    suffix = file_path.suffix  # take suffix from path
 
-    new_dir = suffix[1:]  # take new folder name from the file
+    new_dir = file_path.suffix[1:]  # take new folder name from the file
     if target_dir_path.joinpath(new_dir).exists():
         shutil.move(file_path, target_dir_path.joinpath(new_dir))
-
     else:
         os.makedirs(target_dir_path.joinpath(new_dir))
         shutil.move(file_path, target_dir_path.joinpath(new_dir))
@@ -48,7 +41,9 @@ def is_empty(dir_path: Path) -> bool:
 
 if __name__ == '__main__':
 
-    source_path = Path('../garbage')   # Path(sys.argv[1])
-    target_path = Path('../sorted')  #  Path(sys.argv[2])
+    source_path = Path(sys.argv[1])
+    target_path = Path(sys.argv[2])
     print(source_path, target_path)
     check_dir(source_path, target_path)
+    if is_empty(source_path):
+        os.rmdir(source_path)
