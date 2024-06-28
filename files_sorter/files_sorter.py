@@ -1,4 +1,3 @@
-from multiprocessing import Process, RLock as P_lock
 import os
 import shutil
 from pathlib import Path
@@ -10,14 +9,13 @@ from time import time
 logger = logging.getLogger()
 streem_handler = logging.StreamHandler()
 formatter = logging.Formatter(
-    '%(processName)s %(threadName)s %(message)s'
+    '%(threadName)s %(message)s'
 )
 streem_handler.setFormatter(formatter)
 logger.addHandler(streem_handler)
 logger.setLevel(logging.DEBUG)
 
 t_lock = T_lock()
-p_lock = P_lock()
 
 
 def check_dir(locker: T_lock, source_path: Path, target_path: Path):
@@ -43,13 +41,9 @@ def copy_file_to_new_dir(file_path: Path, target_dir_path: Path):
         shutil.move(file_path, target_dir_path.joinpath(new_dir))
 
 
-def is_empty(dir_path: Path) -> bool:
-    return len(os.listdir(dir_path)) == 0
-
-
 if __name__ == '__main__':
 
-    source_path = Path(sys.argv[1])   # Path(sys.argv[1]) | Path('../garbage')
+    source_path = Path(sys.argv[1])
     target_path = Path(sys.argv[2])
 
     timer = time()
@@ -62,13 +56,7 @@ if __name__ == '__main__':
         threads.append(thread)
     [el.join() for el in threads]
 
-    # processes = []
-    # for folder in source_path.iterdir():
-    #     logger.debug(f'check folder: {folder}')
-    #     process = Process(target=check_dir, args=(p_lock, folder, target_path))
-    #     process.start()
-    #     processes.append(process)
-    # [el.join() for el in processes]
+    shutil.rmtree(source_path)
 
     logger.debug(f'Performance time: {time() - timer}')
 
