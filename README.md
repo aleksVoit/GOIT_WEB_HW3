@@ -4,8 +4,8 @@
 application sort files in folder. All files move to new folders grouped by file types.
 
 Sorter run in command line. application receive 2 parameters. 
-1-st is an existing folder with all files mixed up, and the 2nd parameter is a 
-destination folder.
+1-st is the path of an existing folder where all the files mixed up, and the 2nd parameter is a 
+destination folder's path.
 
 for example, you can start application with command:
 
